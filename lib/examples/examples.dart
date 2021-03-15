@@ -1,0 +1,68 @@
+import 'package:todo_app/models/to_do_model.dart';
+
+final DateTime now = DateTime.now();
+
+final List<ToDoModel> globalToDoList = [
+  ToDoModel(
+    id: now.millisecondsSinceEpoch,
+    name: "បោកខោអាវ1",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now,
+    updatedOn: null,
+    reminder: now.subtract(Duration(hours: 10)),
+    deadline: now.subtract(Duration(hours: 0)),
+    completed: false,
+    prioritized: false,
+  ),
+  ToDoModel(
+    id: now.add(Duration(days: 1)).millisecondsSinceEpoch,
+    name: "បោកខោអាវ2",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now.add(Duration(days: 1)),
+    updatedOn: null,
+    reminder: now.add(Duration(days: 1)).subtract(Duration(hours: 10)),
+    deadline: now.add(Duration(days: 2)),
+    completed: false,
+    prioritized: false,
+  ),
+  ToDoModel(
+    id: now.add(Duration(days: 2)).millisecondsSinceEpoch,
+    name: "បោកខោអាវ3",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now.add(Duration(days: 2)),
+    updatedOn: now.add(Duration(days: 5)),
+    reminder: now.add(Duration(days: 10)).subtract(Duration(hours: 10)),
+    completed: true,
+    prioritized: false,
+  ),
+  ToDoModel(
+    id: now.add(Duration(days: 3)).millisecondsSinceEpoch,
+    name: "បោកខោអាវ4",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now.add(Duration(days: 3)),
+    updatedOn: null,
+    reminder: now.add(Duration(days: 3)).subtract(Duration(hours: 10)),
+    completed: false,
+    prioritized: false,
+  ),
+  ToDoModel(
+    id: now.add(Duration(days: 4)).millisecondsSinceEpoch,
+    name: "បោកខោអាវ5",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now.add(Duration(days: 4)),
+    updatedOn: null,
+    reminder: now.add(Duration(days: 4)).subtract(Duration(hours: 1)),
+    completed: true,
+    prioritized: false,
+  ),
+  ToDoModel(
+    id: now.add(Duration(days: 5)).millisecondsSinceEpoch,
+    name: "បោកខោអាវ6",
+    note: "I don't know, how just take it to sister.",
+    createdOn: now.add(Duration(days: 5)),
+    updatedOn: null,
+    reminder: now.add(Duration(days: 5)).subtract(Duration(hours: 4)),
+    completed: true,
+    prioritized: false,
+  ),
+];
