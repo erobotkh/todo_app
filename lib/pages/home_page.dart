@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/config_constant.dart';
-import 'package:todo_app/widgets/d_task.dart';
+import 'package:todo_app/widgets/d_task_tile.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
