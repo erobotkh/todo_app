@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/config_constant.dart';
-import 'package:todo_app/pages/detail_page.dart';
-
+import 'package:todo_app/widgets/d_task_tile.dart';
+import 'package:todo_app/widgets/t_task_tile.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -10,45 +10,124 @@ class HomePage extends StatelessWidget {
     final _theme = Theme.of(context);
     return Scaffold(
       appBar: _buildAppBar(_theme, context),
-      body: _buildBody(context),
+      body: _buildBody(_theme, context),
     );
   }
 
-  AppBar _buildAppBar(ThemeData _theme, BuildContext context) {
+  _buildAppBar(ThemeData _theme, BuildContext context) {
     return AppBar(
       centerTitle: false,
       brightness: Brightness.dark,
       backgroundColor: _theme.primaryColorDark,
-      leading: Icon(Icons.done_all, color: _theme.backgroundColor),
+      leading: IconButton(
+          icon: Icon(Icons.done_all, color: _theme.backgroundColor),
+          onPressed: () {}),
       title: Text(
-        "បញ្ជីកិច្ចការ Home Page Testing",
+        "បញ្ជីកិច្ចការ",
         style: TextStyle(
-          color: Theme.of(context).backgroundColor,
+          color: _theme.backgroundColor,
+          fontSize: 14,
         ),
       ),
     );
   }
 
-  Center _buildBody(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  _buildBody(ThemeData _theme, BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: ListView(
         children: [
-          const SizedBox(height: ConfigConstant.size0),
-          TextButton(
-            child: const Text("Open Detail Page"),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) {
-                    return DetailPage(taskId: "1");
-                  },
-                ),
-              );
-            },
+          _buildWriteTodo(_theme, context),
+          SizedBox(
+            height: ConfigConstant.size1,
           ),
+          TTaskTile(
+            name: "បញ្ជីកិច្ចការ",
+            iconData: Icons.star,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.radio_button_unchecked,
+          ),
+          TTaskTile(
+            name: "បញ្ជីកិច្ចការ",
+            iconData: Icons.star,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.radio_button_unchecked,
+          ),
+          TTaskTile(
+            name: "បញ្ជីកិច្ចការ",
+            iconData: Icons.star,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.radio_button_unchecked,
+          ),
+          TTaskTile(
+            name: "បញ្ជីកិច្ចការ",
+            iconData: Icons.star_border,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.radio_button_unchecked,
+          ),
+          TTaskTile(
+            name: "បញ្ជីកិច្ចការ",
+            iconData: Icons.star_border,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.radio_button_unchecked,
+          ),
+          SizedBox(
+            height: ConfigConstant.size3,
+          ),
+          DTask(
+            name: "កិច្ចការរួចរាល់",
+            onPressed: () {},
+          ),
+          SizedBox(
+            height: ConfigConstant.size3,
+          ),
+          TTaskTile(
+            name: "Complete math exercise",
+            iconData: Icons.star,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.check_circle,
+          ),
+          TTaskTile(
+            name: "Complete math exercise",
+            iconData: Icons.star_border,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.check_circle,
+          ),
+          TTaskTile(
+            name: "Complete math exercise",
+            iconData: Icons.star_border,
+            onPressed: () {},
+            taskId: '',
+            taskName: null,
+            iconButton: Icons.check_circle,
+          ),        
         ],
+      ),
+    );
+  }
+
+  _buildWriteTodo(ThemeData _theme, BuildContext context) {
+    return Container(
+      child: TextField(
+        decoration: InputDecoration(
+          fillColor: _theme.backgroundColor,
+          filled: true,
+          hintText: "Write your to do here...",
+        ),
       ),
     );
   }
