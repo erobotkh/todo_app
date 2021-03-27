@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/config_constant.dart';
-import 'package:todo_app/widgets/d_task_tile.dart';
+import 'package:todo_app/widgets/d_text_d.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: ConfigConstant.size3,
           ),
-          DTask(
+          DTextD(
             name: "កិច្ចការរួចរាល់",
             onPressed: () {},
           ),
@@ -124,6 +124,7 @@ class HomePage extends StatelessWidget {
     return Container(
       child: TextField(
         decoration: InputDecoration(
+          border: InputBorder.none,
           fillColor: _theme.backgroundColor,
           filled: true,
           hintText: "Write your to do here...",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DTask extends StatelessWidget {
-  const DTask({
+class DTextD extends StatelessWidget {
+  const DTextD({
     Key key,
     @required this.name,
     @required this.onPressed,
