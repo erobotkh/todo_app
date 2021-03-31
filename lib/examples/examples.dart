@@ -53,7 +53,7 @@ final List<ToDoModel> globalToDoList = [
     updatedOn: null,
     reminder: now.add(Duration(days: 4)).subtract(Duration(hours: 1)),
     completed: true,
-    prioritized: false,
+    prioritized: true,
   ),
   ToDoModel(
     id: now.add(Duration(days: 5)).millisecondsSinceEpoch,
