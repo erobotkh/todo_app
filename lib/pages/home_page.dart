@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/constants/config_constant.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
+import 'package:todo_app/pages/detail_page.dart';
 import 'package:todo_app/widgets/d_task_tile.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 
@@ -15,7 +16,11 @@ class HomePage extends HookWidget {
     var notifier = useProvider(todoTaskNotifier);
     return Scaffold(
       appBar: _buildAppBar(_theme, context),
-      body: _buildBody(_theme, context),
+      body: _buildBody(
+        _theme,
+        context,
+        notifier,
+      ),
     );
   }
 
@@ -37,7 +42,11 @@ class HomePage extends HookWidget {
     );
   }
 
-  _buildBody(ThemeData _theme, BuildContext context) {
+  _buildBody(
+    ThemeData _theme,
+    BuildContext context,
+    TodoTaskNotifier notifier,
+  ) {
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView(
@@ -46,48 +55,27 @@ class HomePage extends HookWidget {
           SizedBox(
             height: ConfigConstant.size1,
           ),
-          TTaskTile(
-            name: "បញ្ជីកិច្ចការ",
-            iconData: Icons.star,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.radio_button_unchecked,
-          ),
-          TTaskTile(
-            name: "បញ្ជីកិច្ចការ",
-            iconData: Icons.star,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.radio_button_unchecked,
-          ),
-          TTaskTile(
-            name: "បញ្ជីកិច្ចការ",
-            iconData: Icons.star,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.radio_button_unchecked,
-          ),
-          TTaskTile(
-            name: "បញ្ជីកិច្ចការ",
-            iconData: Icons.star_border,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.radio_button_unchecked,
-          ),
-          TTaskTile(
-            name: "បញ្ជីកិច្ចការ",
-            iconData: Icons.star_border,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.radio_button_unchecked,
-          ),
-          SizedBox(
-            height: ConfigConstant.size3,
+          Column(
+            children: List.generate(
+              notifier.listTodo.length,
+              (index) {
+                final todo = notifier.listTodo.entries.toList()[index].value;
+                return TTaskTile(
+                  name: todo.name,
+                  iconData: Icons.star,
+                  onPressed: () {
+                    print(todo.note);
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return DetailPage(todo: todo);
+                    }));
+                  },
+                  taskId: "",
+                  taskName: null,
+                  iconButton: Icons.radio_button_unchecked,
+                );
+              },
+            ),
           ),
           DTask(
             name: "កិច្ចការរួចរាល់",
@@ -119,7 +107,7 @@ class HomePage extends HookWidget {
             taskId: '',
             taskName: null,
             iconButton: Icons.check_circle,
-          ),        
+          ),
         ],
       ),
     );

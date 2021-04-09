@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/examples/examples.dart';
+import 'package:todo_app/database/todo_database.dart';
 import 'package:todo_app/models/to_do_model.dart';
 
 class TodoTaskNotifier extends ChangeNotifier {
-  List<ToDoModel> _listTodo = [];
-  getTodoList() {
-    _listTodo = globalToDoList;
-    return _listTodo;
+  Map<int, ToDoModel> listTodo = {};
+  final database = ToDoDatabase.instance;
+
+  load() async {
+    final result = await database.todoListById();
+    if (result != null) {
+      this.listTodo = result;
+    }
+    return listTodo;
   }
 
   getIncompletTasks() {
     List<ToDoModel> _doneTasks = [];
-    for (var todoTask in _listTodo) {
-      if (todoTask.completed == false) {
-        _doneTasks.add(todoTask);
+    for (var todoTask in listTodo.entries) {
+      if (todoTask.value.completed == false) {
+        _doneTasks.add(todoTask.value);
       }
     }
     return _doneTasks;
@@ -22,16 +27,16 @@ class TodoTaskNotifier extends ChangeNotifier {
 
   getCompletedTasks() {
     List<ToDoModel> _doneTasks = [];
-    for (var todoTask in _listTodo) {
-      if (todoTask.completed == true) {
-        _doneTasks.add(todoTask);
+    for (var todoTask in listTodo.entries) {
+      if (todoTask.value.completed == true) {
+        _doneTasks.add(todoTask.value);
       }
     }
     return _doneTasks;
   }
 
   deleteTask(ToDoModel task) {
-    _listTodo.remove(task);
+    listTodo.remove(task);
     print('deleted');
     notifyListeners();
   }
@@ -39,7 +44,7 @@ class TodoTaskNotifier extends ChangeNotifier {
 
 final todoTaskNotifier = ChangeNotifierProvider<TodoTaskNotifier>(
   (ref) {
-    final notifier = TodoTaskNotifier()..getTodoList();
+    final notifier = TodoTaskNotifier()..load();
     return notifier;
   },
 );

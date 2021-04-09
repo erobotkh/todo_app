@@ -10,7 +10,7 @@ class TTaskTile extends StatelessWidget {
     this.isComplete = false,
     @required this.name,
     @required this.iconData,
-    @required this.iconButton,   
+    @required this.iconButton,
     @required this.taskName,
     @required this.taskId,
     @required this.onPressed,
@@ -48,6 +48,7 @@ class TTaskTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: ListTile(
+        onTap: onPressed,
         leading: Container(
           decoration: BoxDecoration(
             color: _theme.disabledColor,
@@ -75,4 +76,3 @@ class TTaskTile extends StatelessWidget {
     );
   }
 }
-
