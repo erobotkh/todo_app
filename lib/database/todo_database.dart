@@ -8,12 +8,12 @@ import 'package:todo_app/models/to_do_model.dart';
 class ToDoDatabase {
   ToDoDatabase._privateConstructor();
   static final ToDoDatabase instance = ToDoDatabase._privateConstructor();
-  static Database _database;
+  static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
     _database = await _init();
-    return _database;
+    return _database!;
   }
 
   Future<Database> _init() async {
@@ -41,7 +41,7 @@ class ToDoDatabase {
   }
 
   /// map of key of `TODO id` and value of `TODO model`
-  Future<Map<int, ToDoModel>> todoListById() async {
+  Future<Map<int, ToDoModel>?> todoListById() async {
     var client = await database;
     List<Map<String, dynamic>> maps = await client.query(
       "todo",

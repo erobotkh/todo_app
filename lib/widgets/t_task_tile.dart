@@ -5,22 +5,22 @@ import 'package:todo_app/constants/config_constant.dart';
 
 class TTaskTile extends StatelessWidget {
   const TTaskTile({
-    Key key,
+    Key? key,
     this.isPriority = false,
     this.isComplete = false,
-    @required this.name,
-    @required this.iconData,
-    @required this.iconButton,
-    @required this.taskName,
-    @required this.taskId,
-    @required this.onPressed,
+    required this.name,
+    required this.iconData,
+    required this.iconButton,
+    required this.taskName,
+    required this.taskId,
+    required this.onPressed,
   }) : super(key: key);
 
   final bool isPriority;
   final bool isComplete;
-  final bool taskName;
+  final bool? taskName;
   final String taskId;
-  final String name;
+  final String? name;
   final IconData iconData;
   final IconData iconButton;
   final Function onPressed;
@@ -48,7 +48,7 @@ class TTaskTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: ListTile(
-        onTap: onPressed,
+        onTap: onPressed as void Function()?,
         leading: Container(
           decoration: BoxDecoration(
             color: _theme.disabledColor,
@@ -62,7 +62,7 @@ class TTaskTile extends StatelessWidget {
           ),
         ),
         title: Text(
-          name,
+          name!,
           style: TextStyle(fontSize: 14),
         ),
         trailing: IconButton(

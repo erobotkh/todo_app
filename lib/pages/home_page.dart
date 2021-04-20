@@ -8,7 +8,7 @@ import 'package:todo_app/widgets/d_task_tile.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 
 class HomePage extends HookWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,33 +81,6 @@ class HomePage extends HookWidget {
             name: "កិច្ចការរួចរាល់",
             onPressed: () {},
           ),
-          SizedBox(
-            height: ConfigConstant.size3,
-          ),
-          TTaskTile(
-            name: "Complete math exercise",
-            iconData: Icons.star,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.check_circle,
-          ),
-          TTaskTile(
-            name: "Complete math exercise",
-            iconData: Icons.star_border,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.check_circle,
-          ),
-          TTaskTile(
-            name: "Complete math exercise",
-            iconData: Icons.star_border,
-            onPressed: () {},
-            taskId: '',
-            taskName: null,
-            iconButton: Icons.check_circle,
-          ),
         ],
       ),
     );
@@ -116,6 +89,7 @@ class HomePage extends HookWidget {
   _buildWriteTodo(ThemeData _theme, BuildContext context) {
     return Container(
       child: TextField(
+        style: _theme.textTheme.bodyText2,
         decoration: InputDecoration(
           border: InputBorder.none,
           fillColor: _theme.backgroundColor,

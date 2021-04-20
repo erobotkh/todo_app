@@ -11,8 +11,8 @@ import 'home_page.dart';
 
 class DetailPage extends HookWidget {
   const DetailPage({
-    Key key,
-    @required this.todo,
+    Key? key,
+    required this.todo,
   }) : super(key: key);
 
   final ToDoModel todo;
@@ -23,8 +23,9 @@ class DetailPage extends HookWidget {
     // ToDoModel todo =
     //     globalToDoList.firstWhere((element) => element.id == taskId);
     DateFormat formater = DateFormat('dd MMM yyy').add_jm();
-    String date = formater.format(todo.createdOn);
-    String reminder = timeago.format(todo.reminder);
+    String date =
+        todo.createdOn != null ? formater.format(todo.createdOn!) : "";
+    String reminder = timeago.format(todo.reminder!);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: _theme.backgroundColor,
@@ -90,7 +91,7 @@ class DetailPage extends HookWidget {
               title: 'Reminder',
               titleColor: Colors.white,
               trailing: Text(
-                reminder ?? 'reminder',
+                reminder,
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.5),
                   fontSize: 14,

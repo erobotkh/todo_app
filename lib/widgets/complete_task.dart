@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class Complete extends StatelessWidget {
-  final double fontsize;
-  final FontStyle fontStyle;
-  final FontWeight fontWeight;
-  final Color colors;
+  final double? fontsize;
+  final FontStyle? fontStyle;
+  final FontWeight? fontWeight;
+  final Color? colors;
   final String text;
   final String title;
   const Complete(
-      {Key key,
+      {Key? key,
       this.fontsize,
       this.fontStyle,
       this.fontWeight,
       this.colors,
-      @required this.title,
-      @required this.text})
+      required this.title,
+      required this.text})
       : super(key: key);
 
   @override

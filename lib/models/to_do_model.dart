@@ -1,38 +1,37 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class ToDoModel {
-  final int id; // DateTime.now().millisecondsSinceEpoch
+  final int? id; // DateTime.now().millisecondsSinceEpoch
   final bool prioritized;
   final bool completed;
-  final String name;
-  final String note;
-  final DateTime createdOn;
-  final DateTime updatedOn;
-  final DateTime reminder;
-  final DateTime deadline;
+  final String? name;
+  final String? note;
+  final DateTime? createdOn;
+  final DateTime? updatedOn;
+  final DateTime? reminder;
+  final DateTime? deadline;
 
   ToDoModel({
     this.reminder,
     this.updatedOn,
     this.deadline,
-    @required this.id,
-    @required this.name,
-    @required this.note,
-    @required this.createdOn,
+    required this.id,
+    required this.name,
+    required this.note,
+    required this.createdOn,
     this.prioritized = false,
     this.completed = false,
   });
 
   copyWith({
-    int id,
-    bool prioritized,
-    bool completed,
-    String name,
-    String note,
-    DateTime createdOn,
-    DateTime updatedOn,
-    DateTime reminder,
+    int? id,
+    bool? prioritized,
+    bool? completed,
+    String? name,
+    String? note,
+    DateTime? createdOn,
+    DateTime? updatedOn,
+    DateTime? reminder,
   }) {
     return ToDoModel(
       id: id ?? this.id,
@@ -47,7 +46,7 @@ class ToDoModel {
   }
 
   factory ToDoModel.fromJson(Map<String, dynamic> json) {
-    final DateTime updatedOn =
+    final DateTime? updatedOn =
         json.containsKey("updated_on") && json["updated_on"] != null
             ? DateTime.fromMillisecondsSinceEpoch(json['updated_on'])
             : null;
@@ -55,7 +54,7 @@ class ToDoModel {
     final DateTime createdOn =
         DateTime.fromMillisecondsSinceEpoch(json['created_on']);
 
-    final DateTime reminder =
+    final DateTime? reminder =
         json.containsKey("reminder") && json["reminder"] != null
             ? DateTime.fromMillisecondsSinceEpoch(json['reminder'])
             : null;
@@ -73,15 +72,14 @@ class ToDoModel {
   }
 
   Map<String, dynamic> toJson() {
-    final createdOn = this.createdOn != null
-        ? this.createdOn.millisecondsSinceEpoch
-        : DateTime.now().millisecondsSinceEpoch;
+    final createdOn = this.createdOn?.millisecondsSinceEpoch ??
+        DateTime.now().millisecondsSinceEpoch;
 
     final updatedOn =
-        this.updatedOn != null ? this.updatedOn.millisecondsSinceEpoch : null;
+        this.updatedOn != null ? this.updatedOn!.millisecondsSinceEpoch : null;
 
     final reminder =
-        this.reminder != null ? this.reminder.millisecondsSinceEpoch : null;
+        this.reminder != null ? this.reminder!.millisecondsSinceEpoch : null;
 
     return {
       "id": this.id,

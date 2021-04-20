@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class DTask extends StatelessWidget {
   const DTask({
-    Key key,
-    @required this.name,
-    @required this.onPressed,
+    Key? key,
+    required this.name,
+    required this.onPressed,
   }) : super(key: key);
 
   final String name;

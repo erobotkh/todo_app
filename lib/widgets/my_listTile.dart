@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyListTile extends StatelessWidget {
   const MyListTile({
-    Key key,
+    Key? key,
     this.trailing,
     this.leading,
     this.title,
@@ -13,14 +13,14 @@ class MyListTile extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
-  final Widget trailing;
-  final Widget leading;
-  final String title;
-  final Color titleColor;
-  final Color color;
-  final Function onTap;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+  final Widget? trailing;
+  final Widget? leading;
+  final String? title;
+  final Color? titleColor;
+  final Color? color;
+  final Function? onTap;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class MyListTile extends StatelessWidget {
       child: ListTile(
         leading: leading,
         title: Text(
-          title,
+          title!,
           style: TextStyle(
             color: titleColor ?? Colors.black,
             fontSize: 14,
@@ -42,7 +42,7 @@ class MyListTile extends StatelessWidget {
           ),
         ),
         trailing: trailing,
-        onTap: onTap,
+        onTap: onTap as void Function()?,
       ),
     );
   }

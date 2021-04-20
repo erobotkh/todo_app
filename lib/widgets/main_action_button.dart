@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 class MainActionButton extends StatelessWidget {
   const MainActionButton({
-    Key key,
+    Key? key,
     this.trailing,
     this.backgroundColor,
     this.date,
     this.time,
     this.colors,
-    @required this.label,
-    @required this.onPressed,
+    required this.label,
+    required this.onPressed,
   }) : super(key: key);
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final String label;
-  final Widget trailing;
+  final Widget? trailing;
   final VoidCallback onPressed;
-  final String date;
-  final String time;
-  final Color colors;
+  final String? date;
+  final String? time;
+  final Color? colors;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class MainActionButton extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "${date}, ",
+                  "$date, ",
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.6),
                     fontSize: 14,
@@ -56,7 +56,7 @@ class MainActionButton extends StatelessWidget {
                   width: 4,
                 ),
                 Text(
-                  time,
+                  time!,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.6),
                     fontSize: 14,
