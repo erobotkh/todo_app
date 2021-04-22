@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/constants/config_constant.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 import 'package:todo_app/pages/detail_page.dart';
-import 'package:todo_app/widgets/d_task_tile.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 
 class HomePage extends HookWidget {
@@ -30,8 +29,9 @@ class HomePage extends HookWidget {
       brightness: Brightness.dark,
       backgroundColor: _theme.primaryColorDark,
       leading: IconButton(
-          icon: Icon(Icons.done_all, color: _theme.backgroundColor),
-          onPressed: () {}),
+        icon: Icon(Icons.done_all, color: _theme.backgroundColor),
+        onPressed: () {},
+      ),
       title: Text(
         "បញ្ជីកិច្ចការ",
         style: TextStyle(
@@ -51,45 +51,61 @@ class HomePage extends HookWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: [
-          _buildWriteTodo(_theme, context),
+          _buildWriteTodo(_theme, context, (todoName) async {
+            await notifier.addTodo(todoName);
+          }),
           SizedBox(
             height: ConfigConstant.size1,
           ),
           Column(
             children: List.generate(
-              notifier.listTodo.length,
+              notifier.todoAsList.length,
               (index) {
-                final todo = notifier.listTodo.entries.toList()[index].value;
+                final todo = notifier.todoAsList[index];
                 return TTaskTile(
-                  name: todo.name,
-                  iconData: Icons.star,
+                  todo: todo,
+                  onPriorityPressed: () async {
+                    if (todo.id == null) return;
+                    await notifier.setPriority(
+                      todo.id!,
+                      !todo.prioritized,
+                    );
+                  },
+                  onSetToComplete: () async {
+                    if (todo.id == null) return;
+                    await notifier.setCompleted(
+                      todo.id!,
+                      !todo.completed,
+                    );
+                  },
                   onPressed: () {
                     print(todo.note);
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return DetailPage(todo: todo);
-                    }));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return DetailPage(todo: todo);
+                        },
+                      ),
+                    );
                   },
-                  taskId: "",
-                  taskName: null,
-                  iconButton: Icons.radio_button_unchecked,
                 );
               },
             ),
-          ),
-          DTask(
-            name: "កិច្ចការរួចរាល់",
-            onPressed: () {},
           ),
         ],
       ),
     );
   }
 
-  _buildWriteTodo(ThemeData _theme, BuildContext context) {
+  _buildWriteTodo(
+    ThemeData _theme,
+    BuildContext context,
+    ValueChanged<String> onSubmitted,
+  ) {
     return Container(
       child: TextField(
         style: _theme.textTheme.bodyText2,
+        onSubmitted: onSubmitted,
         decoration: InputDecoration(
           border: InputBorder.none,
           fillColor: _theme.backgroundColor,

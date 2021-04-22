@@ -23,7 +23,7 @@ class ToDoModel {
     this.completed = false,
   });
 
-  copyWith({
+  ToDoModel copyWith({
     int? id,
     bool? prioritized,
     bool? completed,
@@ -31,6 +31,7 @@ class ToDoModel {
     String? note,
     DateTime? createdOn,
     DateTime? updatedOn,
+    DateTime? deadline,
     DateTime? reminder,
   }) {
     return ToDoModel(
@@ -42,6 +43,7 @@ class ToDoModel {
       reminder: reminder ?? this.reminder,
       completed: completed ?? this.completed,
       prioritized: prioritized ?? this.prioritized,
+      deadline: deadline ?? this.deadline,
     );
   }
 
@@ -59,6 +61,11 @@ class ToDoModel {
             ? DateTime.fromMillisecondsSinceEpoch(json['reminder'])
             : null;
 
+    final DateTime? deadline =
+        json.containsKey("deadline") && json["deadline"] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['deadline'])
+            : null;
+
     return ToDoModel(
       id: json['id'],
       name: json['name'],
@@ -67,7 +74,8 @@ class ToDoModel {
       updatedOn: updatedOn,
       reminder: reminder,
       prioritized: json['prioritized'] == 1 ? true : false,
-      completed: json['completed'] == 0 ? true : false,
+      completed: json['completed'] == 1 ? true : false,
+      deadline: deadline,
     );
   }
 
@@ -81,6 +89,9 @@ class ToDoModel {
     final reminder =
         this.reminder != null ? this.reminder!.millisecondsSinceEpoch : null;
 
+    final deadline =
+        this.deadline != null ? this.deadline!.millisecondsSinceEpoch : null;
+
     return {
       "id": this.id,
       "prioritized": this.prioritized == true ? 1 : 0,
@@ -90,6 +101,7 @@ class ToDoModel {
       "reminder": reminder,
       "created_on": createdOn,
       "updated_on": updatedOn,
+      "deadline": deadline,
     };
   }
 }

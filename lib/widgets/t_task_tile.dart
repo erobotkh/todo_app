@@ -2,28 +2,21 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/config_constant.dart';
+import 'package:todo_app/models/to_do_model.dart';
 
 class TTaskTile extends StatelessWidget {
   const TTaskTile({
     Key? key,
-    this.isPriority = false,
-    this.isComplete = false,
-    required this.name,
-    required this.iconData,
-    required this.iconButton,
-    required this.taskName,
-    required this.taskId,
+    required this.todo,
     required this.onPressed,
+    required this.onPriorityPressed,
+    required this.onSetToComplete,
   }) : super(key: key);
 
-  final bool isPriority;
-  final bool isComplete;
-  final bool? taskName;
-  final String taskId;
-  final String? name;
-  final IconData iconData;
-  final IconData iconButton;
-  final Function onPressed;
+  final ToDoModel todo;
+  final void Function() onPressed;
+  final void Function() onPriorityPressed;
+  final void Function() onSetToComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +41,31 @@ class TTaskTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: ListTile(
-        onTap: onPressed as void Function()?,
+        onTap: onPressed,
         leading: Container(
           decoration: BoxDecoration(
             color: _theme.disabledColor,
           ),
           child: IconButton(
             icon: Icon(
-              iconButton,
+              todo.completed
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
               color: _theme.primaryColorDark,
             ),
-            onPressed: () {},
+            onPressed: onSetToComplete,
           ),
         ),
         title: Text(
-          name!,
+          todo.name ?? "",
           style: TextStyle(fontSize: 14),
         ),
         trailing: IconButton(
           icon: Icon(
-            iconData,
+            todo.prioritized ? Icons.star : Icons.star_outline,
             color: _theme.primaryColor,
           ),
-          onPressed: () {},
+          onPressed: onPriorityPressed,
         ),
       ),
     );
