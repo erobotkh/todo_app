@@ -17,147 +17,167 @@ class DetailPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final draftNotiifer = useState(todo);
 
-    final notifier = useProvider(draftTaskProvider)..setDraftTodo(todo);
-    final _todo = notifier.draftTodo;
+    return ValueListenableBuilder(
+        valueListenable: draftNotiifer,
+        builder: (context, ToDoModel? value, child) {
+          final _todo = value;
 
-    DateFormat formater = DateFormat('dd MMM yyy').add_jm();
-    String date =
-        _todo?.deadline != null ? formater.format(_todo!.deadline!) : "";
-    String? reminder =
-        _todo?.reminder != null ? timeago.format(_todo!.reminder!) : null;
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        TextEditingController().clear();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: _theme.backgroundColor,
-          actions: [
-            IconButton(
-              icon: Icon(
-                _todo?.prioritized == true
-                    ? Icons.star_rate_rounded
-                    : Icons.star_rate_outlined,
-                color: Colors.blue,
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () async {
-                var notifier = context.read(todoTaskNotifier);
-                await notifier.deleteTask(todo);
-                Navigator.of(context).pop();
-              },
-              color: Colors.red,
-            ),
-            IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () {},
-              color: Colors.blue,
-            ),
-          ],
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyListTile(
-                margin: EdgeInsets.only(bottom: 8),
-                color: Colors.blue,
-                title: 'Deadline',
-                titleColor: Colors.white,
-                onTap: () async {
-                  DateTime? date = await showDatePicker(
-                    context: context,
-                    initialDate: todo.reminder ?? DateTime.now(),
-                    firstDate: DateTime(DateTime.now().year - 50),
-                    lastDate: DateTime(DateTime.now().year + 50),
-                  );
+          DateFormat formater = DateFormat('dd MMM yyy').add_jm();
+          String date =
+              _todo?.deadline != null ? formater.format(_todo!.deadline!) : "";
+          String? reminder =
+              _todo?.reminder != null ? timeago.format(_todo!.reminder!) : null;
 
-                  if (date == null) return;
-                  if (_todo == null) return;
-
-                  final updated = _todo.copyWith(deadline: date);
-                  notifier.setDraftTodo(updated);
-                  notifier.setState();
-                },
-                trailing: Text(
-                  date,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.5),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              TextEditingController().clear();
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: _theme.backgroundColor,
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      _todo?.prioritized == true
+                          ? Icons.star_rate_rounded
+                          : Icons.star_rate_outlined,
+                      color: Colors.blue,
+                    ),
+                    onPressed: () async {
+                      var notifier = context.read(todoTaskNotifier);
+                      if (_todo == null) return;
+                      final updated = _todo.copyWith(
+                        prioritized: !_todo.prioritized,
+                      );
+                      await notifier.setPriority(
+                        updated.id!,
+                        updated.prioritized,
+                      );
+                      draftNotiifer.value = updated;
+                    },
                   ),
-                ),
-              ),
-              MyListTile(
-                margin: EdgeInsets.only(bottom: 32),
-                color: Colors.black,
-                title: 'Reminder',
-                titleColor: Colors.white,
-                onTap: () async {
-                  DateTime? date = await showDatePicker(
-                    context: context,
-                    initialDate: _todo?.reminder ?? DateTime.now(),
-                    firstDate: DateTime(DateTime.now().year - 50),
-                    lastDate: DateTime(DateTime.now().year + 50),
-                  );
-
-                  if (date == null) return;
-                  if (_todo == null) return;
-
-                  final updated = _todo.copyWith(reminder: date);
-                  notifier.setDraftTodo(updated);
-                  notifier.setState();
-                },
-                trailing: Text(
-                  reminder ?? "",
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.5),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () async {
+                      var notifier = context.read(todoTaskNotifier);
+                      await notifier.deleteTask(todo);
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.red,
                   ),
+                  IconButton(
+                    icon: Icon(Icons.save),
+                    onPressed: () async {
+                      var notifier = context.read(todoTaskNotifier);
+                      if (_todo == null) return;
+                      await notifier.updateTodo(todo: _todo);
+                    },
+                    color: Colors.blue,
+                  ),
+                ],
+              ),
+              body: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MyListTile(
+                      margin: EdgeInsets.only(bottom: 8),
+                      color: Colors.blue,
+                      title: 'Deadline',
+                      titleColor: Colors.white,
+                      onTap: () async {
+                        DateTime? date = await showDatePicker(
+                          context: context,
+                          initialDate: todo.reminder ?? DateTime.now(),
+                          firstDate: DateTime(DateTime.now().year - 50),
+                          lastDate: DateTime(DateTime.now().year + 50),
+                        );
+
+                        if (date == null) return;
+                        if (_todo == null) return;
+
+                        final updated = _todo.copyWith(deadline: date);
+                        draftNotiifer.value = updated;
+                      },
+                      trailing: Text(
+                        date,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    MyListTile(
+                      margin: EdgeInsets.only(bottom: 32),
+                      color: Colors.black,
+                      title: 'Reminder',
+                      titleColor: Colors.white,
+                      onTap: () async {
+                        DateTime? date = await showDatePicker(
+                          context: context,
+                          initialDate: _todo?.reminder ?? DateTime.now(),
+                          firstDate: DateTime(DateTime.now().year - 50),
+                          lastDate: DateTime(DateTime.now().year + 50),
+                        );
+
+                        if (date == null) return;
+                        if (_todo == null) return;
+
+                        final updated = _todo.copyWith(reminder: date);
+                        draftNotiifer.value = updated;
+                      },
+                      trailing: Text(
+                        reminder ?? "",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: _todo?.name,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Todo name",
+                      ),
+                      onChanged: (value) {
+                        if (_todo == null) return;
+                        final updated = _todo.copyWith(name: value);
+                        draftNotiifer.value = updated;
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: _todo?.note,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Note...",
+                      ),
+                      onChanged: (value) {
+                        if (_todo == null) return;
+                        final updated = _todo.copyWith(note: value);
+                        draftNotiifer.value = updated;
+                      },
+                    ),
+                  ],
                 ),
               ),
-              TextFormField(
-                initialValue: _todo?.name,
-                style: Theme.of(context).textTheme.bodyText1,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Todo name",
-                ),
-                onChanged: (value) {
-                  if (_todo == null) return;
-                  final updated = _todo.copyWith(name: value);
-                  notifier.setDraftTodo(updated);
-                  notifier.setState();
-                },
-              ),
-              TextFormField(
-                initialValue: _todo?.note,
-                style: Theme.of(context).textTheme.bodyText2,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Note...",
-                ),
-                onChanged: (value) {
-                  if (_todo == null) return;
-                  final updated = _todo.copyWith(note: value);
-                  notifier.setDraftTodo(updated);
-                  notifier.setState();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }
