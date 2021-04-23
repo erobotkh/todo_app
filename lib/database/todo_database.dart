@@ -76,9 +76,9 @@ class ToDoDatabase {
     required ToDoModel todo,
   }) async {
     final note =
-        todo.note != null ? todo.note?.replaceAll("'", "$singleQuote") : null;
+        todo.note != null ? todo.note?.replaceAll("'", "$singleQuote") : "";
     final name =
-        todo.name != null ? todo.name?.replaceAll("'", "$singleQuote") : null;
+        todo.name != null ? todo.name?.replaceAll("'", "$singleQuote") : "";
     String query = '''
     UPDATE todo 
     SET completed = ${todo.completed ? 1 : 0}, 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/models/to_do_model.dart';
-import 'package:todo_app/notifier/draft_task_notifier.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 import 'package:todo_app/widgets/my_listTile.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -63,8 +62,17 @@ class DetailPage extends HookWidget {
                     icon: Icon(Icons.delete),
                     onPressed: () async {
                       var notifier = context.read(todoTaskNotifier);
-                      await notifier.deleteTask(todo);
-                      Navigator.of(context).pop();
+                      final snackBar = SnackBar(
+                        content: Text("Are you sure to delete?"),
+                        action: SnackBarAction(
+                          label: "Yes",
+                          onPressed: () async {
+                            await notifier.deleteTask(todo);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     color: Colors.red,
                   ),
@@ -159,7 +167,7 @@ class DetailPage extends HookWidget {
                       },
                     ),
                     TextFormField(
-                      initialValue: _todo?.note,
+                      initialValue: _todo?.note != "null" ? _todo?.note : "",
                       style: Theme.of(context).textTheme.bodyText2,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
