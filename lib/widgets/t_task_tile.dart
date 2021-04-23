@@ -23,25 +23,18 @@ class TTaskTile extends StatelessWidget {
     final _theme = Theme.of(context);
 
     return Container(
-      height: ConfigConstant.size9,
-      width: double.infinity,
-      child: Column(
-        children: [
-          _buildTtask(_theme, context),
-        ],
-      ),
+      alignment: Alignment.center,
+      margin: const EdgeInsets.only(bottom: 8.0),
+      child: _buildTtask(_theme, context),
     );
   }
 
   _buildTtask(ThemeData _theme, BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: _theme.backgroundColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
+      decoration: BoxDecoration(color: _theme.backgroundColor),
       child: ListTile(
         onTap: onPressed,
+        contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
         leading: Container(
           decoration: BoxDecoration(
             color: _theme.disabledColor,
@@ -58,12 +51,15 @@ class TTaskTile extends StatelessWidget {
         ),
         title: Text(
           todo.name ?? "",
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+            fontSize: 14,
+            decoration: todo.completed ? TextDecoration.lineThrough : null,
+          ),
         ),
         trailing: IconButton(
           icon: Icon(
             todo.prioritized ? Icons.star : Icons.star_outline,
-            color: _theme.primaryColor,
+            color: Color(0xFFF1BE43),
           ),
           onPressed: onPriorityPressed,
         ),

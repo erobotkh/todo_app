@@ -63,7 +63,14 @@ class DetailPage extends HookWidget {
                     onPressed: () async {
                       var notifier = context.read(todoTaskNotifier);
                       final snackBar = SnackBar(
-                        content: Text("Are you sure to delete?"),
+                        content: Text(
+                          "Are you sure to delete?",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(
+                                  color: Theme.of(context).colorScheme.surface),
+                        ),
                         action: SnackBarAction(
                           label: "Yes",
                           onPressed: () async {
@@ -82,6 +89,18 @@ class DetailPage extends HookWidget {
                       var notifier = context.read(todoTaskNotifier);
                       if (_todo == null) return;
                       await notifier.updateTodo(todo: _todo);
+
+                      final snackBar = SnackBar(
+                        content: Text(
+                          "Saved successfully",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(
+                                  color: Theme.of(context).colorScheme.surface),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     color: Colors.blue,
                   ),

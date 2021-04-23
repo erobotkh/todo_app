@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/constants/config_constant.dart';
+import 'package:todo_app/models/to_do_model.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 import 'package:todo_app/pages/detail_page.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
@@ -51,12 +52,15 @@ class HomePage extends HookWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: [
-          _buildWriteTodo(_theme, context, (todoName) async {
-            await notifier.addTodo(todoName);
-          }),
-          SizedBox(
-            height: ConfigConstant.size1,
+          _buildWriteTodo(
+            theme: _theme,
+            context: context,
+            onSubmitted: (todoName) async {
+              if (todoName.isEmpty) return;
+              await notifier.addTodo(todoName);
+            },
           ),
+          SizedBox(height: ConfigConstant.size1),
           Column(
             children: List.generate(
               notifier.todoAsList.length,
@@ -97,18 +101,18 @@ class HomePage extends HookWidget {
     );
   }
 
-  _buildWriteTodo(
-    ThemeData _theme,
-    BuildContext context,
-    ValueChanged<String> onSubmitted,
-  ) {
+  _buildWriteTodo({
+    required ThemeData theme,
+    required BuildContext context,
+    required ValueChanged<String> onSubmitted,
+  }) {
     return Container(
       child: TextField(
-        style: _theme.textTheme.bodyText2,
+        style: theme.textTheme.bodyText2,
         onSubmitted: onSubmitted,
         decoration: InputDecoration(
           border: InputBorder.none,
-          fillColor: _theme.backgroundColor,
+          fillColor: theme.backgroundColor,
           filled: true,
           hintText: "Write your to do here...",
         ),
