@@ -74,7 +74,7 @@ class TTaskTile extends StatelessWidget {
         IconSlideAction(
           caption: 'Delete',
           color: Theme.of(context).errorColor,
-          icon: Icons.archive,
+          icon: Icons.delete,
           onTap: () async {
             var notification = context.read(notificationNotifier(context));
             await notification.removeNotification(todo);

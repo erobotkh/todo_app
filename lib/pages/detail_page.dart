@@ -159,6 +159,8 @@ class DetailPage extends HookWidget {
                             lastDate: DateTime(DateTime.now().year + 50),
                           );
 
+                          if (date == null) return;
+
                           TimeOfDay? timeOfDay = await showTimePicker(
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(
@@ -166,7 +168,6 @@ class DetailPage extends HookWidget {
                             ),
                           );
 
-                          if (date == null) return;
                           if (timeOfDay == null) return;
 
                           final dateResult = DateTime(
@@ -202,6 +203,8 @@ class DetailPage extends HookWidget {
                             lastDate: DateTime(DateTime.now().year + 50),
                           );
 
+                          if (date == null) return;
+
                           TimeOfDay? timeOfDay = await showTimePicker(
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(
@@ -209,7 +212,6 @@ class DetailPage extends HookWidget {
                             ),
                           );
 
-                          if (date == null) return;
                           if (timeOfDay == null) return;
                           if (_todo == null) return;
 
