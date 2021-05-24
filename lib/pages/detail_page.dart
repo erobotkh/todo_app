@@ -67,7 +67,6 @@ class DetailPage extends HookWidget {
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () async {
-                        var notifier = context.read(todoTaskNotifier);
                         final dialog = AlertDialog(
                           title: Text('Are you sure to delete?'),
                           actions: [
@@ -79,6 +78,7 @@ class DetailPage extends HookWidget {
                             ),
                             TextButton(
                               onPressed: () async {
+                                var notifier = context.read(todoTaskNotifier);
                                 await notifier.deleteTask(todo);
                                 Navigator.of(context)..pop()..pop();
                               },

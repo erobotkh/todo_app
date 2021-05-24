@@ -1,6 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/models/to_do_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/notifier/todo_task_notifier.dart';
 
 class TTaskTile extends StatelessWidget {
   const TTaskTile({
@@ -28,40 +31,66 @@ class TTaskTile extends StatelessWidget {
   }
 
   _buildTtask(ThemeData _theme, BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: _theme.backgroundColor),
-      child: ListTile(
-        onTap: onPressed,
-        contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
-        leading: Container(
-          decoration: BoxDecoration(
-            color: _theme.disabledColor,
-          ),
-          child: IconButton(
-            icon: Icon(
-              todo.completed
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_unchecked,
-              color: _theme.primaryColorDark,
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Container(
+        decoration: BoxDecoration(color: _theme.backgroundColor),
+        child: ListTile(
+          onTap: onPressed,
+          contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          leading: Container(
+            decoration: BoxDecoration(
+              color: _theme.disabledColor,
             ),
-            onPressed: onSetToComplete,
+            child: IconButton(
+              icon: Icon(
+                todo.completed
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                color: _theme.primaryColorDark,
+              ),
+              onPressed: onSetToComplete,
+            ),
           ),
-        ),
-        title: Text(
-          todo.name ?? "",
-          style: TextStyle(
-            fontSize: 14,
-            decoration: todo.completed ? TextDecoration.lineThrough : null,
+          title: Text(
+            todo.name ?? "",
+            style: TextStyle(
+              fontSize: 14,
+              decoration: todo.completed ? TextDecoration.lineThrough : null,
+            ),
           ),
-        ),
-        trailing: IconButton(
-          icon: Icon(
-            todo.prioritized ? Icons.star : Icons.star_outline,
-            color: Color(0xFFF1BE43),
+          trailing: IconButton(
+            icon: Icon(
+              todo.prioritized ? Icons.star : Icons.star_outline,
+              color: Color(0xFFF1BE43),
+            ),
+            onPressed: onPriorityPressed,
           ),
-          onPressed: onPriorityPressed,
         ),
       ),
+      actions: <Widget>[
+        IconSlideAction(
+          caption: 'Delete',
+          color: Theme.of(context).errorColor,
+          icon: Icons.archive,
+          onTap: () async {
+            var notifier = context.read(todoTaskNotifier);
+            await notifier.deleteTask(todo);
+          },
+        ),
+      ],
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Delete',
+          color: Theme.of(context).errorColor,
+          icon: Icons.delete,
+          onTap: () async {
+            var notifier = context.read(todoTaskNotifier);
+            await notifier.deleteTask(todo);
+          },
+        ),
+      ],
     );
   }
 }

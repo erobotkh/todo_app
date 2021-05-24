@@ -14,13 +14,19 @@ class HomePage extends HookWidget {
     final _theme = Theme.of(context);
     var notifier = useProvider(todoTaskNotifier);
     var textController = useTextEditingController();
-    return Scaffold(
-      appBar: _buildAppBar(_theme, context),
-      body: _buildBody(
-        _theme,
-        context,
-        notifier,
-        textController,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        TextEditingController().clear();
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(_theme, context),
+        body: _buildBody(
+          _theme,
+          context,
+          notifier,
+          textController,
+        ),
       ),
     );
   }
