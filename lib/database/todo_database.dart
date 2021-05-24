@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import "package:path/path.dart";
 import 'package:todo_app/models/to_do_model.dart';
+import 'package:todo_app/notifier/notification_notifier.dart';
 
 class ToDoDatabase {
   ToDoDatabase._privateConstructor();
@@ -101,7 +102,7 @@ class ToDoDatabase {
   }
 
   /// map of key of `TODO id` and value of `TODO model`
-  Future<Map<int, ToDoModel>?> todoListById() async {
+  Future<Map<int, ToDoModel>?> todoListById({String? where}) async {
     var client = await database;
     List<Map<String, dynamic>> maps = await client.query(
       "todo",
@@ -116,6 +117,7 @@ class ToDoDatabase {
         "updated_on",
         "deadline",
       ],
+      where: where,
     );
 
     final map = Map.fromIterable(maps, key: (e) {

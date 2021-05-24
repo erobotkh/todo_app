@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/models/to_do_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/notifier/notification_notifier.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 
 class TTaskTile extends StatelessWidget {
@@ -75,6 +76,8 @@ class TTaskTile extends StatelessWidget {
           color: Theme.of(context).errorColor,
           icon: Icons.archive,
           onTap: () async {
+            var notification = context.read(notificationNotifier(context));
+            await notification.removeNotification(todo);
             var notifier = context.read(todoTaskNotifier);
             await notifier.deleteTask(todo);
           },
@@ -86,6 +89,8 @@ class TTaskTile extends StatelessWidget {
           color: Theme.of(context).errorColor,
           icon: Icons.delete,
           onTap: () async {
+            var notification = context.read(notificationNotifier(context));
+            await notification.removeNotification(todo);
             var notifier = context.read(todoTaskNotifier);
             await notifier.deleteTask(todo);
           },

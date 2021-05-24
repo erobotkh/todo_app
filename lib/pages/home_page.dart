@@ -7,7 +7,11 @@ import 'package:todo_app/pages/detail_page.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
 
 class HomePage extends HookWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String? todoId;
+  const HomePage({
+    Key? key,
+    this.todoId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

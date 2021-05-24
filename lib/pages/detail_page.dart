@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/models/to_do_model.dart';
+import 'package:todo_app/notifier/notification_notifier.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
+import 'package:todo_app/pages/home_page.dart';
 import 'package:todo_app/widgets/my_listTile.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -11,8 +13,11 @@ class DetailPage extends HookWidget {
   const DetailPage({
     Key? key,
     required this.todo,
+    this.fromNotification = false,
   }) : super(key: key);
   final ToDoModel todo;
+  final bool fromNotification;
+
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
@@ -32,7 +37,15 @@ class DetailPage extends HookWidget {
           return WillPopScope(
             onWillPop: () async {
               ScaffoldMessenger.maybeOf(context)?.removeCurrentSnackBar();
-              Navigator.of(context).pop();
+              if (fromNotification) {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) {
+                    return HomePage();
+                  },
+                ));
+              } else {
+                Navigator.of(context).pop();
+              }
               return false;
             },
             child: GestureDetector(
@@ -80,6 +93,10 @@ class DetailPage extends HookWidget {
                               onPressed: () async {
                                 var notifier = context.read(todoTaskNotifier);
                                 await notifier.deleteTask(todo);
+                                await notifier.updateTodo(todo: todo);
+                                var notification =
+                                    context.read(notificationNotifier(context));
+                                await notification.removeNotification(todo);
                                 Navigator.of(context)..pop()..pop();
                               },
                               child: Text('YES'),
@@ -101,7 +118,9 @@ class DetailPage extends HookWidget {
                         var notifier = context.read(todoTaskNotifier);
                         if (_todo == null) return;
                         await notifier.updateTodo(todo: _todo);
-
+                        var notification =
+                            context.read(notificationNotifier(context));
+                        await notification.scheduleNotification(_todo);
                         final snackBar = SnackBar(
                           content: Text(
                             "Saved successfully",
@@ -133,6 +152,8 @@ class DetailPage extends HookWidget {
                         title: 'Deadline',
                         titleColor: Colors.white,
                         onTap: () async {
+                          if (_todo == null) return;
+
                           DateTime? date = await showDatePicker(
                             context: context,
                             initialDate: todo.reminder ?? DateTime.now(),
@@ -140,10 +161,25 @@ class DetailPage extends HookWidget {
                             lastDate: DateTime(DateTime.now().year + 50),
                           );
 
-                          if (date == null) return;
-                          if (_todo == null) return;
+                          TimeOfDay? timeOfDay = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              DateTime(DateTime.now().year - 50),
+                            ),
+                          );
 
-                          final updated = _todo.copyWith(deadline: date);
+                          if (date == null) return;
+                          if (timeOfDay == null) return;
+
+                          final dateResult = DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                            timeOfDay.hour,
+                            timeOfDay.minute,
+                          );
+
+                          final updated = _todo.copyWith(deadline: dateResult);
                           draftNotiifer.value = updated;
                         },
                         trailing: Text(
