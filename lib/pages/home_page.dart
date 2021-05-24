@@ -13,12 +13,14 @@ class HomePage extends HookWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     var notifier = useProvider(todoTaskNotifier);
+    var textController = useTextEditingController();
     return Scaffold(
       appBar: _buildAppBar(_theme, context),
       body: _buildBody(
         _theme,
         context,
         notifier,
+        textController,
       ),
     );
   }
@@ -46,6 +48,7 @@ class HomePage extends HookWidget {
     ThemeData _theme,
     BuildContext context,
     TodoTaskNotifier notifier,
+    TextEditingController textController,
   ) {
     return Container(
       padding: EdgeInsets.all(16),
@@ -54,9 +57,11 @@ class HomePage extends HookWidget {
           _buildWriteTodo(
             theme: _theme,
             context: context,
+            textController: textController,
             onSubmitted: (todoName) async {
               if (todoName.isEmpty) return;
               await notifier.addTodo(todoName);
+              textController.clear();
             },
           ),
           SizedBox(height: ConfigConstant.size1),
@@ -104,11 +109,13 @@ class HomePage extends HookWidget {
     required ThemeData theme,
     required BuildContext context,
     required ValueChanged<String> onSubmitted,
+    required TextEditingController textController,
   }) {
     return Container(
       child: TextField(
         style: theme.textTheme.bodyText2,
         onSubmitted: onSubmitted,
+        controller: textController,
         decoration: InputDecoration(
           border: InputBorder.none,
           fillColor: theme.backgroundColor,
