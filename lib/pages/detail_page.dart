@@ -7,7 +7,6 @@ import 'package:todo_app/notifier/notification_notifier.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 import 'package:todo_app/pages/home_page.dart';
 import 'package:todo_app/widgets/my_listTile.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class DetailPage extends HookWidget {
   const DetailPage({
@@ -32,7 +31,7 @@ class DetailPage extends HookWidget {
           String date =
               _todo?.deadline != null ? formater.format(_todo!.deadline!) : "";
           String? reminder =
-              _todo?.reminder != null ? timeago.format(_todo!.reminder!) : null;
+              _todo?.reminder != null ? formater.format(_todo!.reminder!) : "";
 
           return WillPopScope(
             onWillPop: () async {
@@ -93,7 +92,6 @@ class DetailPage extends HookWidget {
                               onPressed: () async {
                                 var notifier = context.read(todoTaskNotifier);
                                 await notifier.deleteTask(todo);
-                                await notifier.updateTodo(todo: todo);
                                 var notification =
                                     context.read(notificationNotifier(context));
                                 await notification.removeNotification(todo);
@@ -199,19 +197,35 @@ class DetailPage extends HookWidget {
                         onTap: () async {
                           DateTime? date = await showDatePicker(
                             context: context,
-                            initialDate: _todo?.reminder ?? DateTime.now(),
+                            initialDate: todo.reminder ?? DateTime.now(),
                             firstDate: DateTime(DateTime.now().year - 50),
                             lastDate: DateTime(DateTime.now().year + 50),
                           );
 
+                          TimeOfDay? timeOfDay = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              DateTime(DateTime.now().year - 50),
+                            ),
+                          );
+
                           if (date == null) return;
+                          if (timeOfDay == null) return;
                           if (_todo == null) return;
 
-                          final updated = _todo.copyWith(reminder: date);
+                          final dateResult = DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                            timeOfDay.hour,
+                            timeOfDay.minute,
+                          );
+
+                          final updated = _todo.copyWith(reminder: dateResult);
                           draftNotiifer.value = updated;
                         },
                         trailing: Text(
-                          reminder ?? "",
+                          reminder,
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.5),
                             fontSize: 14,

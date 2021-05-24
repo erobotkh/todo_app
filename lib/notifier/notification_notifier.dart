@@ -50,14 +50,13 @@ class NotificationNotifier extends ChangeNotifier {
 
   Future<void> scheduleNotification(ToDoModel toDo) async {
     if (toDo.id == null) return;
-    if (toDo.deadline == null) return;
-    if ((toDo.deadline?.millisecondsSinceEpoch ?? 0) -
-            DateTime.now().millisecondsSinceEpoch <
-        0) return;
+    if (toDo.reminder == null) return;
+    if ((toDo.reminder?.millisecondsSinceEpoch ?? 0) <
+        (toDo.deadline?.millisecondsSinceEpoch ?? 0)) return;
 
     await removeNotification(toDo);
     var scheduledNotificationDateTime =
-        tz.TZDateTime.from(toDo.deadline!, tz.local);
+        tz.TZDateTime.from(toDo.reminder!, tz.local);
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'notification',
