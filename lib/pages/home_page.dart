@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/constants/config_constant.dart';
-import 'package:todo_app/models/to_do_model.dart';
 import 'package:todo_app/notifier/todo_task_notifier.dart';
 import 'package:todo_app/pages/detail_page.dart';
 import 'package:todo_app/widgets/t_task_tile.dart';
