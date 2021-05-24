@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:todo_app/constants/config_constant.dart';
 import 'package:todo_app/models/to_do_model.dart';
 
 class TTaskTile extends StatelessWidget {
