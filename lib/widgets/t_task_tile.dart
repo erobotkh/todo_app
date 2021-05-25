@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/models/to_do_model.dart';
@@ -33,8 +32,6 @@ class TTaskTile extends StatelessWidget {
   }
 
   _buildTtask(ThemeData _theme, BuildContext context) {
-    DateFormat formater = DateFormat('dd MMM yyy').add_jm();
-    String date = todo.deadline != null ? formater.format(todo.deadline!) : "";
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
