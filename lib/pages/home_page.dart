@@ -60,58 +60,56 @@ class HomePage extends HookWidget {
     TodoTaskNotifier notifier,
     TextEditingController textController,
   ) {
-    return Container(
+    return ListView(
       padding: EdgeInsets.all(16),
-      child: ListView(
-        children: [
-          _buildWriteTodo(
-            theme: _theme,
-            context: context,
-            textController: textController,
-            onSubmitted: (todoName) async {
-              if (todoName.isEmpty) return;
-              await notifier.addTodo(todoName);
-              textController.clear();
+      children: [
+        _buildWriteTodo(
+          theme: _theme,
+          context: context,
+          textController: textController,
+          onSubmitted: (todoName) async {
+            if (todoName.isEmpty) return;
+            await notifier.addTodo(todoName);
+            textController.clear();
+          },
+        ),
+        SizedBox(height: ConfigConstant.size1),
+        Column(
+          children: List.generate(
+            notifier.todoAsList.length,
+            (index) {
+              final todo = notifier.todoAsList[index];
+              return TTaskTile(
+                todo: todo,
+                onPriorityPressed: () async {
+                  if (todo.id == null) return;
+                  await notifier.setPriority(
+                    todo.id!,
+                    !todo.prioritized,
+                  );
+                },
+                onSetToComplete: () async {
+                  if (todo.id == null) return;
+                  await notifier.setCompleted(
+                    todo.id!,
+                    !todo.completed,
+                  );
+                },
+                onPressed: () {
+                  print(todo.note);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DetailPage(todo: todo);
+                      },
+                    ),
+                  );
+                },
+              );
             },
           ),
-          SizedBox(height: ConfigConstant.size1),
-          Column(
-            children: List.generate(
-              notifier.todoAsList.length,
-              (index) {
-                final todo = notifier.todoAsList[index];
-                return TTaskTile(
-                  todo: todo,
-                  onPriorityPressed: () async {
-                    if (todo.id == null) return;
-                    await notifier.setPriority(
-                      todo.id!,
-                      !todo.prioritized,
-                    );
-                  },
-                  onSetToComplete: () async {
-                    if (todo.id == null) return;
-                    await notifier.setCompleted(
-                      todo.id!,
-                      !todo.completed,
-                    );
-                  },
-                  onPressed: () {
-                    print(todo.note);
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return DetailPage(todo: todo);
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
