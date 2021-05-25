@@ -28,7 +28,6 @@ class ThemeConfig {
       titleSpacing: 0.0,
       color: _primaryColorLight,
       textTheme: _textThemeData,
-      backwardsCompatibility: false,
       titleTextStyle: _textThemeData.bodyText1,
       iconTheme: IconThemeData(
         color: _primaryColorDark,

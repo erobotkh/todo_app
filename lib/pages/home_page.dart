@@ -38,16 +38,16 @@ class HomePage extends HookWidget {
   _buildAppBar(ThemeData _theme, BuildContext context) {
     return AppBar(
       centerTitle: false,
-      brightness: Brightness.dark,
       backgroundColor: _theme.primaryColorDark,
+      brightness: Brightness.dark,
       leading: IconButton(
-        icon: Icon(Icons.done_all, color: _theme.backgroundColor),
+        icon: Icon(Icons.done_all, color: Colors.white),
         onPressed: () {},
       ),
       title: Text(
         "បញ្ជីកិច្ចការ",
         style: TextStyle(
-          color: _theme.backgroundColor,
+          color: Colors.white,
           fontSize: 14,
         ),
       ),
