@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import "package:path/path.dart";
 import 'package:todo_app/models/to_do_model.dart';
-import 'package:todo_app/notifier/notification_notifier.dart';
 
 class ToDoDatabase {
   ToDoDatabase._privateConstructor();

@@ -14,8 +14,7 @@ class NotificationNotifier extends ChangeNotifier {
 
   NotificationNotifier(this.context) {
     tz.initializeTimeZones();
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('flutter_devs');
+    var initializationSettingsAndroid = AndroidInitializationSettings('logo');
     var initializationSettingsIOs = IOSInitializationSettings();
     var initSetttings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -62,8 +61,6 @@ class NotificationNotifier extends ChangeNotifier {
       'notification',
       'Notification',
       'Push notification',
-      icon: 'flutter_devs',
-      largeIcon: DrawableResourceAndroidBitmap('flutter_devs'),
     );
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
@@ -82,6 +79,28 @@ class NotificationNotifier extends ChangeNotifier {
       payload: toDo.id.toString(),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> showNotification(ToDoModel toDoModel) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'notification',
+      'Notification',
+      'Push notification',
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
+      showWhen: false,
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      DateTime.fromMillisecondsSinceEpoch(toDoModel.id!).hashCode,
+      'Added to Reminder',
+      toDoModel.name,
+      platformChannelSpecifics,
+      payload: toDoModel.id.toString(),
     );
   }
 }
